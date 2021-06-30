@@ -1,0 +1,22 @@
+#navbar,
+#todo-list-header,
+#todo-list {
+  left: 0;
+  width: 100%;
+}
+#todo-list ul li {
+  width: 100vw;
+}
+#navbar nav .menu {
+  padding-right: 1.4rem;
+  display: inline;
+}
+#sidebar {
+  background-color: #fff;
+  z-index: 1;
+  display: none;
+}
+#sidebar .logo .close {
+  display: inline;
+  margin-left: auto;
+}
