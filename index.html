@@ -37,43 +37,7 @@
           <div class="logo-name">.todos</div>
           <i class="fas fa-times close"></i>
         </div>
-        <ul>
-          <li>
-            <a href="#">
-              <i class="fas fa-check-double"></i>
-              <span class="todo-name">Market shopping</span>
-              <span class="todo-count">9</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i class="fas fa-check-double"></i>
-              <span class="todo-name">Work</span>
-              <span class="todo-count">9</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i class="fas fa-check-double"></i>
-              <span class="todo-name">Books</span>
-              <span class="todo-count">9</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i class="fas fa-check-double"></i>
-              <span class="todo-name">Design</span>
-              <span class="todo-count">9</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i class="fas fa-check-double"></i>
-              <span class="todo-name">Other</span>
-              <span class="todo-count">9</span>
-            </a>
-          </li>
-        </ul>
+        <ul class="todos-list"></ul>
         <hr />
         <div class="add-todos">
           <i class="fas fa-plus"></i>
@@ -85,7 +49,7 @@
             class="todo-name-input"
             placeholder="Todo name"
           />
-          <button type="submit" class="add-button">ADD</button>
+          <button type="submit" class="btn add-button">ADD</button>
         </div>
       </div>
     </div>
@@ -108,6 +72,22 @@
       <section>
         <div id="todo-list-header">
           <div class="todo-header">Market shopping</div>
+        </div>
+      </section>
+      <section>
+        <div id="add-new-todo">
+          <form id="todo-form" name="form">
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                name="todo"
+                id="todo"
+                placeholder="Add new todo"
+              />
+            </div>
+            <button type="submit" class="btn add-button">ADD</button>
+          </form>
         </div>
       </section>
       <section>

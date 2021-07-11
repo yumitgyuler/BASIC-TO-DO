@@ -74,11 +74,7 @@ html {
 }
 #sidebar .add-todos .add-button {
   padding: 10px;
-  background-color: #2d89ef;
-  color: #fff;
-  border: none;
   margin-top: 5px;
-  border-radius: 5px;
 }
 /* Navbar */
 
@@ -124,6 +120,28 @@ html {
   margin: auto;
   font-weight: 700;
 }
+/* Add New Todo */
+#add-new-todo {
+  position: absolute;
+  display: flex;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  border-right: 2px solid grey;
+  height: 60px;
+  width: 500px;
+  left: 250px;
+  top: 120px;
+}
+#add-new-todo #todo-form .form-group {
+  display: inline;
+}
+#add-new-todo #todo-form .form-group .form-control {
+  padding: 5px;
+  margin-left: 20px;
+}
+#add-new-todo #todo-form .add-button {
+  padding: 10px;
+  margin-top: 5px;
+}
 /* Todo List */
 #todo-list {
   position: absolute;
@@ -133,7 +151,7 @@ html {
   background-color: rgb(240, 248, 255, 0.2);
   width: 500px;
   left: 250px;
-  top: 120px;
+  top: 180px;
 }
 #todo-list ul {
   list-style-type: none;
