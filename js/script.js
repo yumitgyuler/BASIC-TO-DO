@@ -6,10 +6,11 @@ const todosList = document.querySelector(".todos-list");
 const addTodosNameButton = document.querySelector(".add-button");
 const newTodoName = document.querySelector("#todo-name-input");
 const todos = document.querySelector(".todos");
+const todoHeader = document.querySelector(".todo-header");
 
 addExampleData();
 addTodoListToSideBar();
-loadFirstTodoList();
+loadAllTodoList("todo-list-Books");
 eventListeners();
 
 function eventListeners() {
@@ -29,6 +30,21 @@ function eventListeners() {
   );
   window.addEventListener("resize", displayWindowSize);
   addTodosNameButton.addEventListener("click", addNewTodosNAme);
+  todosList.addEventListener("click", loadAllTodos);
+}
+function loadAllTodos(e) {
+  while (todos.firstChild) {
+    todos.removeChild(todos.firstChild);
+  }
+  if (e.target.tagName === "SPAN" || e.target.tagName === "I") {
+    loadAllTodoList(
+      "todo-list-" + e.target.parentElement.parentElement.className
+    );
+  } else if (e.target.tagName === "A") {
+    loadAllTodoList("todo-list-" + e.target.parentElement.className);
+  } else {
+    loadAllTodoList("todo-list-" + e.target.className);
+  }
 }
 function addNewTodosNAme() {
   const todoName = "todo-list-" + newTodoName.value.trim();
@@ -46,7 +62,6 @@ function displayWindowSize(e) {
   }
 }
 function sideBarStatus(displayMode) {
-  console.log("burdaim");
   sideBar.style.display = `${displayMode}`;
 }
 function addExampleData() {
@@ -67,7 +82,7 @@ function addExampleData() {
   localStorage.setItem("todo-list-Market", JSON.stringify(market));
   localStorage.setItem("todo-list-Work", JSON.stringify(work));
   localStorage.setItem("todo-list-Books", JSON.stringify(books));
-  localStorage.setItem("todo-list.Other", JSON.stringify(other));
+  localStorage.setItem("todo-list-Other", JSON.stringify(other));
 }
 function addTodoListToSideBar() {
   // <li>
@@ -84,6 +99,7 @@ function addTodoListToSideBar() {
     if (key.includes("todo-list")) {
       //Create list item
       const listItem = document.createElement("li");
+      listItem.className = key.substring(10);
 
       //Create link item
       const link = document.createElement("a");
@@ -113,8 +129,9 @@ function addTodoListToSideBar() {
     }
   }
 }
-function loadFirstTodoList() {
-  const firstTodoList = JSON.parse(localStorage.getItem("todo-list-Books"));
+function loadAllTodoList(todoName) {
+  const firstTodoList = JSON.parse(localStorage.getItem(todoName));
+  todoHeader.innerHTML = todoName.substring(10);
   firstTodoList.forEach((element) => {
     addTodoToUi(element);
   });
