@@ -2,12 +2,16 @@ const menuButton = document.querySelector(".menu");
 const closeButton = document.querySelector(".close");
 const sideBar = document.querySelector("#sidebar");
 const pageSize = window.innerWidth;
-const todos = document.querySelector(".todos-list");
+const todosList = document.querySelector(".todos-list");
 const addTodosNameButton = document.querySelector(".add-button");
 const newTodoName = document.querySelector("#todo-name-input");
+const todos = document.querySelector(".todos");
+
 addExampleData();
 addTodoListToSideBar();
+loadFirstTodoList();
 eventListeners();
+
 function eventListeners() {
   menuButton.addEventListener(
     "click",
@@ -73,8 +77,8 @@ function addTodoListToSideBar() {
   //    <span class="todo-count">9</span>
   //   </a>
   // </li>
-  while (todos.firstChild) {
-    todos.removeChild(todos.firstChild);
+  while (todosList.firstChild) {
+    todosList.removeChild(todosList.firstChild);
   }
   for (var key in localStorage) {
     if (key.includes("todo-list")) {
@@ -105,7 +109,41 @@ function addTodoListToSideBar() {
       link.appendChild(todoName);
       link.appendChild(todoCount);
       listItem.appendChild(link);
-      todos.appendChild(listItem);
+      todosList.appendChild(listItem);
     }
   }
+}
+function loadFirstTodoList() {
+  const firstTodoList = JSON.parse(localStorage.getItem("todo-list-Books"));
+  firstTodoList.forEach((element) => {
+    addTodoToUi(element);
+  });
+}
+function addTodoToUi(todo) {
+  // <li>
+  //   <input id="todo1" name="todo1" type="radio" class="with-font" value="sel" />
+  //   <label for="todo1">Radio 1</label>
+  // </li>;
+
+  const todoListItem = document.createElement("li");
+
+  let getLastIdNumber = 1;
+  if (todos.lastChild != null) {
+    getLastIdNumber = todos.lastChild.lastChild.htmlFor + 1;
+  }
+
+  const todoInput = document.createElement("input");
+  todoInput.id = getLastIdNumber;
+  todoInput.type = "radio";
+  todoInput.className = "with-font";
+  todoInput.value = "sel";
+
+  const todoLabel = document.createElement("label");
+  todoLabel.htmlFor = getLastIdNumber;
+  todoLabel.appendChild(document.createTextNode(todo));
+
+  todoListItem.appendChild(todoInput);
+  todoListItem.appendChild(todoLabel);
+
+  todos.appendChild(todoListItem);
 }
