@@ -1,6 +1,7 @@
 #navbar,
 #todo-list-header,
-#todo-list {
+#todo-list,
+#add-new-todo {
   left: 0;
   width: 100%;
 }
