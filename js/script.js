@@ -7,6 +7,7 @@ const addTodosNameButton = document.querySelector(".add-button");
 const newTodoName = document.querySelector("#todo-name-input");
 const todos = document.querySelector(".todos");
 const todoHeader = document.querySelector(".todo-header");
+const searchText = document.querySelector("#search");
 
 addExampleData();
 addTodoListToSideBar();
@@ -31,6 +32,20 @@ function eventListeners() {
   window.addEventListener("resize", displayWindowSize);
   addTodosNameButton.addEventListener("click", addNewTodosNAme);
   todosList.addEventListener("click", loadAllTodos);
+  searchText.addEventListener("keyup", search);
+}
+function search(e) {
+  const searchKey = e.target.value.toLowerCase();
+  const allTodos = document.querySelectorAll(".list-group-item");
+
+  allTodos.forEach((element) => {
+    const text = element.childNodes[1].innerHTML.toLowerCase();
+    if (text.indexOf(searchKey) === -1) {
+      element.setAttribute("style", "display:none !important");
+    } else {
+      element.setAttribute("style", "display:block");
+    }
+  });
 }
 function loadAllTodos(e) {
   while (todos.firstChild) {
@@ -143,7 +158,7 @@ function addTodoToUi(todo) {
   // </li>;
 
   const todoListItem = document.createElement("li");
-
+  todoListItem.className = "list-group-item";
   let getLastIdNumber = 1;
   if (todos.lastChild != null) {
     getLastIdNumber = todos.lastChild.lastChild.htmlFor + 1;
