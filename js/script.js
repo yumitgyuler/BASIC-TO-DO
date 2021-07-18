@@ -52,10 +52,12 @@ function search(e) {
   });
 }
 function addNewTodo(e) {
-  const newTodo = todoInput.value.trim();
-  addToLocalStorege(newTodo);
-  todoInput.value = "";
-  e.preventDefault();
+  if (todoInput.value != "") {
+    const newTodo = todoInput.value.trim();
+    addToLocalStorege(newTodo);
+    todoInput.value = "";
+    e.preventDefault();
+  }
 }
 function addToLocalStorege(newTodo) {
   const listOfTodos = getAllTodosFromStorege(listName);
