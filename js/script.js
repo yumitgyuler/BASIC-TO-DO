@@ -8,6 +8,8 @@ const newTodoName = document.querySelector("#todo-name-input");
 const todos = document.querySelector(".todos");
 const todoHeader = document.querySelector(".todo-header");
 const searchText = document.querySelector("#search");
+const newTodo = document.querySelector("#new-todo");
+const todoInput = document.querySelector("#todo");
 
 addExampleData();
 addTodoListToSideBar();
@@ -33,6 +35,7 @@ function eventListeners() {
   addTodosNameButton.addEventListener("click", addNewTodosNAme);
   todosList.addEventListener("click", loadAllTodos);
   searchText.addEventListener("keyup", search);
+  newTodo.addEventListener("click", addNewTodo);
 }
 function search(e) {
   const searchKey = e.target.value.toLowerCase();
@@ -47,10 +50,32 @@ function search(e) {
     }
   });
 }
-function loadAllTodos(e) {
-  while (todos.firstChild) {
-    todos.removeChild(todos.firstChild);
+function addNewTodo(e) {
+  const addToTodo = todoInput.value.trim();
+  addToLocalStorege(addToTodo);
+  todoInput.value = "";
+  e.preventDefault();
+}
+function addToLocalStorege(addToTodo) {
+  const todoListName = document
+    .querySelector(".list-group-item")
+    .getAttribute("id");
+  const listOfTodos = getAllTodosFromStorege(todoListName);
+  listOfTodos.push(addToTodo);
+  localStorage.setItem(todoListName, JSON.stringify(listOfTodos));
+  removeAllTodosFromUI();
+  loadAllTodoList(todoListName);
+}
+function getAllTodosFromStorege(todosListName) {
+  if (localStorage.getItem(todosListName) === null) {
+    listOfTodos = [];
+  } else {
+    listOfTodos = JSON.parse(localStorage.getItem(todosListName));
   }
+  return listOfTodos;
+}
+function loadAllTodos(e) {
+  removeAllTodosFromUI();
   if (e.target.tagName === "SPAN" || e.target.tagName === "I") {
     loadAllTodoList(
       "todo-list-" + e.target.parentElement.parentElement.className
@@ -59,6 +84,11 @@ function loadAllTodos(e) {
     loadAllTodoList("todo-list-" + e.target.parentElement.className);
   } else {
     loadAllTodoList("todo-list-" + e.target.className);
+  }
+}
+function removeAllTodosFromUI() {
+  while (todos.firstChild) {
+    todos.removeChild(todos.firstChild);
   }
 }
 function addNewTodosNAme() {
@@ -148,17 +178,17 @@ function loadAllTodoList(todoName) {
   const firstTodoList = JSON.parse(localStorage.getItem(todoName));
   todoHeader.innerHTML = todoName.substring(10);
   firstTodoList.forEach((element) => {
-    addTodoToUi(element);
+    addTodoToUi(element, todoName);
   });
 }
-function addTodoToUi(todo) {
+function addTodoToUi(todo, todoName) {
   // <li>
   //   <input id="todo1" name="todo1" type="radio" class="with-font" value="sel" />
   //   <label for="todo1">Radio 1</label>
   // </li>;
-
   const todoListItem = document.createElement("li");
   todoListItem.className = "list-group-item";
+  todoListItem.id = todoName;
   let getLastIdNumber = 1;
   if (todos.lastChild != null) {
     getLastIdNumber = todos.lastChild.lastChild.htmlFor + 1;
