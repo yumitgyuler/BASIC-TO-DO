@@ -2,18 +2,19 @@ const menuButton = document.querySelector(".menu");
 const closeButton = document.querySelector(".close");
 const sideBar = document.querySelector("#sidebar");
 const pageSize = window.innerWidth;
-const todosList = document.querySelector(".todos-list");
-const addTodosNameButton = document.querySelector(".add-button");
-const newTodoName = document.querySelector("#todo-name-input");
+const todosListName = document.querySelector(".todos-list-name");
+const todosListNameButton = document.querySelector(".add-button");
+const newTodosListName = document.querySelector("#todo-name-input");
 const todos = document.querySelector(".todos");
 const todoHeader = document.querySelector(".todo-header");
 const searchText = document.querySelector("#search");
-const newTodo = document.querySelector("#new-todo");
+const newTodoButton = document.querySelector("#new-todo-button");
 const todoInput = document.querySelector("#todo");
+let listName = "";
 
 addExampleData();
-addTodoListToSideBar();
-loadAllTodoList("todo-list-Books");
+addTodoListNameToSideBar();
+loadAllTodos("todo-list-Books");
 eventListeners();
 
 function eventListeners() {
@@ -32,10 +33,10 @@ function eventListeners() {
     false
   );
   window.addEventListener("resize", displayWindowSize);
-  addTodosNameButton.addEventListener("click", addNewTodosNAme);
-  todosList.addEventListener("click", loadAllTodos);
+  todosListNameButton.addEventListener("click", addNewTodosListName);
+  todosListName.addEventListener("click", getTodosListName);
   searchText.addEventListener("keyup", search);
-  newTodo.addEventListener("click", addNewTodo);
+  newTodoButton.addEventListener("click", addNewTodo);
 }
 function search(e) {
   const searchKey = e.target.value.toLowerCase();
@@ -51,53 +52,46 @@ function search(e) {
   });
 }
 function addNewTodo(e) {
-  const addToTodo = todoInput.value.trim();
-  addToLocalStorege(addToTodo);
+  const newTodo = todoInput.value.trim();
+  addToLocalStorege(newTodo);
   todoInput.value = "";
   e.preventDefault();
 }
-function addToLocalStorege(addToTodo) {
-  const todoListName = document
-    .querySelector(".list-group-item")
-    .getAttribute("id");
-  const listOfTodos = getAllTodosFromStorege(todoListName);
-  listOfTodos.push(addToTodo);
-  localStorage.setItem(todoListName, JSON.stringify(listOfTodos));
-  removeAllTodosFromUI();
-  loadAllTodoList(todoListName);
+function addToLocalStorege(newTodo) {
+  const listOfTodos = getAllTodosFromStorege(listName);
+  listOfTodos.push(newTodo);
+  localStorage.setItem(listName, JSON.stringify(listOfTodos));
+  removeElementsFromUI(todos);
+  addTodoListNameToSideBar();
+  loadAllTodos(listName);
 }
-function getAllTodosFromStorege(todosListName) {
-  if (localStorage.getItem(todosListName) === null) {
+function getAllTodosFromStorege(listName) {
+  if (localStorage.getItem(listName) === null) {
     listOfTodos = [];
   } else {
-    listOfTodos = JSON.parse(localStorage.getItem(todosListName));
+    listOfTodos = JSON.parse(localStorage.getItem(listName));
   }
   return listOfTodos;
 }
-function loadAllTodos(e) {
-  removeAllTodosFromUI();
+function getTodosListName(e) {
+  removeElementsFromUI(todos);
   if (e.target.tagName === "SPAN" || e.target.tagName === "I") {
-    loadAllTodoList(
-      "todo-list-" + e.target.parentElement.parentElement.className
-    );
+    listName = "todo-list-" + e.target.parentElement.parentElement.className;
+    loadAllTodos(listName);
   } else if (e.target.tagName === "A") {
-    loadAllTodoList("todo-list-" + e.target.parentElement.className);
+    listName = "todo-list-" + e.target.parentElement.className;
+    loadAllTodos(listName);
   } else {
-    loadAllTodoList("todo-list-" + e.target.className);
+    listName = "todo-list-" + e.target.className;
+    loadAllTodos(listName);
   }
 }
-function removeAllTodosFromUI() {
-  while (todos.firstChild) {
-    todos.removeChild(todos.firstChild);
-  }
-}
-function addNewTodosNAme() {
-  const todoName = "todo-list-" + newTodoName.value.trim();
+function addNewTodosListName() {
+  const todoName = "todo-list-" + newTodosListName.value.trim();
   const nullArray = [];
-  console.log(todoName);
   localStorage.setItem(todoName, JSON.stringify(nullArray));
-  addTodoListToSideBar();
-  newTodoName.value = "";
+  addTodoListNameToSideBar();
+  newTodosListName.value = "";
 }
 function displayWindowSize(e) {
   if (e.currentTarget.innerWidth > 500) {
@@ -129,7 +123,14 @@ function addExampleData() {
   localStorage.setItem("todo-list-Books", JSON.stringify(books));
   localStorage.setItem("todo-list-Other", JSON.stringify(other));
 }
-function addTodoListToSideBar() {
+function removeElementsFromUI(element) {
+  if (element.firstChild != null) {
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+  }
+}
+function addTodoListNameToSideBar() {
   // <li>
   //   <a href="#">
   //    <i class="fas fa-check-double"></i>
@@ -137,9 +138,7 @@ function addTodoListToSideBar() {
   //    <span class="todo-count">9</span>
   //   </a>
   // </li>
-  while (todosList.firstChild) {
-    todosList.removeChild(todosList.firstChild);
-  }
+  removeElementsFromUI(todosListName);
   for (var key in localStorage) {
     if (key.includes("todo-list")) {
       //Create list item
@@ -170,14 +169,15 @@ function addTodoListToSideBar() {
       link.appendChild(todoName);
       link.appendChild(todoCount);
       listItem.appendChild(link);
-      todosList.appendChild(listItem);
+
+      todosListName.appendChild(listItem);
     }
   }
 }
-function loadAllTodoList(todoName) {
-  const firstTodoList = JSON.parse(localStorage.getItem(todoName));
+function loadAllTodos(todoName) {
+  const todoList = getAllTodosFromStorege(todoName);
   todoHeader.innerHTML = todoName.substring(10);
-  firstTodoList.forEach((element) => {
+  todoList.forEach((element) => {
     addTodoToUi(element, todoName);
   });
 }
