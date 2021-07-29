@@ -10,7 +10,7 @@ const todoHeader = document.querySelector(".todo-header");
 const searchText = document.querySelector("#search");
 const newTodoButton = document.querySelector("#new-todo-button");
 const todoInput = document.querySelector("#todo");
-let listName = "";
+let listName = "todo-list-Books";
 
 addExampleData();
 addTodoListNameToSideBar();
@@ -37,6 +37,28 @@ function eventListeners() {
   todosListName.addEventListener("click", getTodosListName);
   searchText.addEventListener("keyup", search);
   newTodoButton.addEventListener("click", addNewTodo);
+  todos.addEventListener("click", removeTodo);
+}
+function removeTodo(e) {
+  if (e.target.tagName === "LABEL") {
+    removeTodoFromLocalStorege(e.target.innerHTML);
+    removeTodoFromUI(e);
+    addTodoListNameToSideBar();
+  }
+}
+function removeTodoFromUI(e) {
+  const element = e.target.parentElement;
+  setTimeout(() => {
+    element.parentNode.removeChild(element);
+  }, 2000);
+}
+function removeTodoFromLocalStorege(deleteTodo) {
+  const allTodo = getAllTodosFromStorege(listName);
+  var todoIndex = allTodo.indexOf(deleteTodo);
+  if (todoIndex > -1) {
+    allTodo.splice(todoIndex, 1);
+    localStorage.setItem(listName, JSON.stringify(allTodo));
+  }
 }
 function search(e) {
   const searchKey = e.target.value.toLowerCase();
