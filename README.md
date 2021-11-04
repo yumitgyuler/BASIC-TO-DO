@@ -1,6 +1,5 @@
 # BASIC TO-DO app "TODOS"
 
-Live Demo: https://yumitgyuler.github.io/basic-todo-app/
 
 A simple todo list app built in HTML, CSS and JavaScript. Basic functionality includes:
 
